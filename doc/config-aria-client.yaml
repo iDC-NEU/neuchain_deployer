@@ -1,0 +1,27 @@
+# filename: config.yaml
+hosts:
+  ${local_server_ip}: 0.0.0.0
+
+  ${block_server_0_ip}: 127.0.0.1
+  ${block_server_1_ip}: 127.0.0.1
+  ${block_server_2_ip}: 127.0.0.1
+
+  ${epoch_server_0_ip}: 127.0.0.1
+
+  ${cc_type}: smallbank
+
+  ${aggregation_enable_flag}: false
+  ${aggregation_block_server_0_ip}: 127.0.0.1
+  ${aggregation_block_server_1_ip}: 127.0.0.1
+
+  cc_config_a: cc_config
+
+servers:
+  - ip: 127.0.0.1
+    folder_name: ./block_server_test_comm
+    hosts:
+      ${local_server_ip}: 127.0.0.1
+  - ip: 127.0.0.1
+    folder_name: ./user
+    hosts:
+      ${local_server_ip}: 127.0.0.1

@@ -1,3 +1,4 @@
+# filename: config.yaml
 hosts:
   ${FABRIC_VERSION}: 1.4.0
   ${FABRIC_LOG_LEVEL}: ERROR
