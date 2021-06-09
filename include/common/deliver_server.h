@@ -25,11 +25,11 @@ public:
 
     virtual void strReplace(const std::map<std::string, std::string>& replacement) = 0;
 
-    virtual void saveDockerComposeFile(const std::string& folderName) = 0;
+    virtual void saveDockerComposeFile(const std::string& appName) = 0;
 
-    virtual void upDockerCompose(const std::string& folderName) = 0;
+    virtual void upDockerCompose(const std::string& appName) = 0;
 
-    virtual void downDockerCompose(const std::string& folderName) = 0;
+    virtual void downDockerCompose(const std::string& appName) = 0;
 
 protected:
     std::string fileData;

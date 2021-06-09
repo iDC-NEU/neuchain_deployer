@@ -12,8 +12,7 @@ void DeliverServerImpl::strReplace(const std::map<std::string, std::string> &rep
         std::string::size_type pos = 0;
         std::string::size_type src_len = src.size();
         std::string::size_type dst_len = dst.size();
-        while((pos=strBig.find(src, pos)) != std::string::npos )
-        {
+        while((pos=strBig.find(src, pos)) != std::string::npos) {
             strBig.replace(pos, src_len, dst);
             pos += dst_len;
         }
@@ -25,26 +24,26 @@ void DeliverServerImpl::strReplace(const std::map<std::string, std::string> &rep
     DLOG(INFO) << fileData;
 }
 
-void DeliverServerImpl::saveDockerComposeFile(const std::string &folderName) {
-    Executor executor("mkdir " + folderName);
+void DeliverServerImpl::saveDockerComposeFile(const std::string &appName) {
+    Executor executor("mkdir " + appName);
     executor.join();
-    std::ofstream file(folderName + "/" + "docker-compose-modify.yaml", std::ios::out | std::ios::binary);
+    std::ofstream file(appName + "/" + "docker-compose-modify.yaml", std::ios::out | std::ios::binary);
     file.write(fileData.data(), fileData.size());
     file.close();
 }
 
-void DeliverServerImpl::upDockerCompose(const std::string &folderName) {
+void DeliverServerImpl::upDockerCompose(const std::string &appName) {
     auto command = std::make_unique<Executor>(
             "cd " +
-            folderName +
+            appName +
             ";\ndocker-compose -f docker-compose-modify.yaml up --force-recreate");
     pendingExecution.push_back(std::move(command));
 }
 
-void DeliverServerImpl::downDockerCompose(const std::string &folderName) {
+void DeliverServerImpl::downDockerCompose(const std::string &appName) {
     auto command = std::make_unique<Executor>(
             "cd " +
-            folderName +
+            appName +
             ";\ndocker-compose -f docker-compose-modify.yaml down;\n"
             "(test -z \\\"$(docker ps -aq)\\\") || docker rm $(docker ps -aq);"
             "(test -z \\\"$(docker images dev* -q)\\\") || docker rmi $(docker images dev* -q);"

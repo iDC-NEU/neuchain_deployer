@@ -32,7 +32,7 @@ void DeliverServerClient::serverUp() {
     for(const auto& server: data["servers"]) {
         deliver = createDeliverServer(server["ip"].as<std::string>());
         deliver->upDockerCompose(server["folder_name"].as<std::string>());
-        sleep(3);
+        sleep(2);
         LOG(INFO) << server["folder_name"].as<std::string>() << " in " << server["ip"].as<std::string>() <<" is up.";
         deliverList.push_back(std::move(deliver));
     }

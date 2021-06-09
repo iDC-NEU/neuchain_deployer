@@ -16,20 +16,20 @@ void DeliverServerStub::strReplace(const std::map<std::string, std::string> &rep
     }
 }
 
-void DeliverServerStub::saveDockerComposeFile(const std::string &folderName) {
-    *ctlMsg->mutable_folder() = folderName;
+void DeliverServerStub::saveDockerComposeFile(const std::string &appName) {
+    *ctlMsg->mutable_folder() = appName;
     ctlMsg->set_status(docker_control_message_Status_CONFIG);
     sendAndResetMsg();
 }
 
-void DeliverServerStub::upDockerCompose(const std::string &folderName) {
-    *ctlMsg->mutable_folder() = folderName;
+void DeliverServerStub::upDockerCompose(const std::string &appName) {
+    *ctlMsg->mutable_folder() = appName;
     ctlMsg->set_status(docker_control_message_Status_UP);
     sendAndResetMsg();
 }
 
-void DeliverServerStub::downDockerCompose(const std::string &folderName) {
-    *ctlMsg->mutable_folder() = folderName;
+void DeliverServerStub::downDockerCompose(const std::string &appName) {
+    *ctlMsg->mutable_folder() = appName;
     ctlMsg->set_status(docker_control_message_Status_DOWN);
     sendAndResetMsg();
 }

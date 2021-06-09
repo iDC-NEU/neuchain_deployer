@@ -7,8 +7,8 @@
 
 #include <string>
 #include <memory>
-#include "deliver_server.h"
-#include "deliver_server_controller.h"
+#include "common/deliver_server.h"
+#include "common/deliver_server_controller.h"
 
 class DeliverServerControllerImpl: public DeliverServerController {
 public:
