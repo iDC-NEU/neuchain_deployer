@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+message docker_config_message {
+  bytes raw_docker_compose_data = 1;
+  map<string, string> replacement = 2;
+}
+
+message docker_control_message {
+  enum Status {
+    UP = 0;
+    DOWN = 1;
+    CONFIG = 2;
+    EXIT = 3;
+  }
+
+  bytes folder = 1;
+  Status status = 2;
+  bytes additional_data = 3;
+}
