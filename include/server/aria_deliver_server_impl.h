@@ -12,8 +12,6 @@
 
 class AriaDeliverServerImpl: public IDockerComposeDeliverServer {
 public:
-    void strReplace(const std::map<std::string, std::string>& replacement) override;
-
     void setDockerComposeFile(const std::string&, const std::string&) override;
 
     void saveDockerComposeFile(const std::string&) override;

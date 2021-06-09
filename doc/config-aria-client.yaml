@@ -1,18 +1,20 @@
-# filename: config.yaml
 hosts:
-  ${local_server_ip}: 0.0.0.0
-
   ${block_server_0_ip}: 127.0.0.1
-  ${block_server_1_ip}: 127.0.0.1
-  ${block_server_2_ip}: 127.0.0.1
+  ${block_server_1_ip}: 127.0.0.2
+  ${block_server_2_ip}: 127.0.0.3
+  ${block_server_3_ip}: 127.0.0.4
+  ${block_server_4_ip}: 127.0.0.5
+  ${block_server_5_ip}: 127.0.0.6
+  ${block_server_6_ip}: 127.0.0.7
+  ${block_server_7_ip}: 127.0.0.8
 
   ${epoch_server_0_ip}: 127.0.0.1
 
-  ${cc_type}: smallbank
+  ${cc_type}: small_bank
 
   ${aggregation_enable_flag}: false
   ${aggregation_block_server_0_ip}: 127.0.0.1
-  ${aggregation_block_server_1_ip}: 127.0.0.1
+  ${aggregation_block_server_1_ip}: 127.0.0.2
 
   cc_config_a: cc_config
 
@@ -23,5 +25,13 @@ servers:
       ${local_server_ip}: 127.0.0.1
   - ip: 127.0.0.1
     folder_name: ./user
+    hosts:
+      ${local_server_ip}: 127.0.0.1
+  - ip: 127.0.0.1
+    folder_name: ./epoch_server -t 500
+    hosts:
+      ${local_server_ip}: 127.0.0.1
+  - ip: 127.0.0.1
+    folder_name: ./user -b 20 4000 1000000
     hosts:
       ${local_server_ip}: 127.0.0.1

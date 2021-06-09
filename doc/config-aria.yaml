@@ -1,4 +1,4 @@
-# filename: config-template.yaml
+# this is a config file for 8 servers
 init_crypto: false
 reset_epoch: true
 
@@ -6,9 +6,18 @@ reset_epoch: true
 local_server_ip: ${local_server_ip}
 
 # the servers that will be used
-server_ips: [${block_server_0_ip}, ${block_server_1_ip}]
+server_ips:
+  - ${block_server_0_ip}
+  - ${block_server_1_ip}
+  - ${block_server_2_ip}
+  - ${block_server_3_ip}
+  - ${block_server_4_ip}
+  - ${block_server_5_ip}
+  - ${block_server_6_ip}
+  - ${block_server_7_ip}
 
-epoch_ips: [${epoch_server_0_ip}]
+epoch_ips:
+  - ${epoch_server_0_ip}
 
 #cc_type: ycsb
 cc_type: ${cc_type}
@@ -26,7 +35,9 @@ aggregation:
   enable: ${aggregation_enable_flag}
   policy: 0
   #policy: 5
-  cluster_ips: [${aggregation_block_server_0_ip}, ${aggregation_block_server_1_ip}]
+  cluster_ips:
+    - ${aggregation_block_server_0_ip}
+    - ${aggregation_block_server_1_ip}
 
 heart_beat_config:
   table_name: heart_beat_table
@@ -38,20 +49,45 @@ heart_beat_config:
 # note: path may not be the same
 server_data:
   ${block_server_0_ip}:
+    public_crt: crypto/server.0.public.key
+    private_crt: crypto/server.0.private.key
+    user_public_crt: crypto/server.0.public.user.key
+    user_private_crt: crypto/server.0.private.user.key
+  ${block_server_1_ip}:
     public_crt: crypto/server.1.public.key
     private_crt: crypto/server.1.private.key
     user_public_crt: crypto/server.1.public.user.key
     user_private_crt: crypto/server.1.private.user.key
-  ${block_server_1_ip}:
+  ${block_server_2_ip}:
     public_crt: crypto/server.2.public.key
     private_crt: crypto/server.2.private.key
     user_public_crt: crypto/server.2.public.user.key
     user_private_crt: crypto/server.2.private.user.key
-  ${block_server_2_ip}:
+  ${block_server_3_ip}:
     public_crt: crypto/server.3.public.key
     private_crt: crypto/server.3.private.key
     user_public_crt: crypto/server.3.public.user.key
     user_private_crt: crypto/server.3.private.user.key
+  ${block_server_4_ip}:
+    public_crt: crypto/server.4.public.key
+    private_crt: crypto/server.4.private.key
+    user_public_crt: crypto/server.4.public.user.key
+    user_private_crt: crypto/server.4.private.user.key
+  ${block_server_5_ip}:
+    public_crt: crypto/server.5.public.key
+    private_crt: crypto/server.5.private.key
+    user_public_crt: crypto/server.5.public.user.key
+    user_private_crt: crypto/server.5.private.user.key
+  ${block_server_6_ip}:
+    public_crt: crypto/server.6.public.key
+    private_crt: crypto/server.6.private.key
+    user_public_crt: crypto/server.6.public.user.key
+    user_private_crt: crypto/server.6.private.user.key
+  ${block_server_7_ip}:
+    public_crt: crypto/server.7.public.key
+    private_crt: crypto/server.7.private.key
+    user_public_crt: crypto/server.7.public.user.key
+    user_private_crt: crypto/server.7.private.user.key
 
 #epoch server cert
 epoch_data:

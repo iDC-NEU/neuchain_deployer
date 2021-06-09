@@ -3,26 +3,8 @@
 //
 
 #include "server/deliver_server_impl.h"
-#include "glog/logging.h"
 #include <algorithm>
 #include <fstream>
-
-void DeliverServerImpl::strReplace(const std::map<std::string, std::string> &replacement) {
-    auto stringReplace = [](std::string &strBig, const std::string &src, const std::string &dst) {
-        std::string::size_type pos = 0;
-        std::string::size_type src_len = src.size();
-        std::string::size_type dst_len = dst.size();
-        while((pos=strBig.find(src, pos)) != std::string::npos) {
-            strBig.replace(pos, src_len, dst);
-            pos += dst_len;
-        }
-    };
-
-    for(const auto& pair: replacement) {
-        stringReplace(fileData, pair.first, pair.second);
-    }
-    DLOG(INFO) << fileData;
-}
 
 void DeliverServerImpl::saveDockerComposeFile(const std::string &appName) {
     Executor executor("mkdir " + appName);

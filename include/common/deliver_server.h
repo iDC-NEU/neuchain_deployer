@@ -23,7 +23,7 @@ public:
     // load it from disk
     virtual void setDockerComposeFile(const std::string& folderName, const std::string& fileName);
 
-    virtual void strReplace(const std::map<std::string, std::string>& replacement) = 0;
+    virtual void strReplace(const std::map<std::string, std::string>& replacement);
 
     virtual void saveDockerComposeFile(const std::string& appName) = 0;
 

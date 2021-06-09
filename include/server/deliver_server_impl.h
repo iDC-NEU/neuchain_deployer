@@ -14,8 +14,6 @@ class DeliverServerImpl: public IDockerComposeDeliverServer {
 public:
     ~DeliverServerImpl() override;
 
-    void strReplace(const std::map<std::string, std::string>& replacement) override;
-
     void saveDockerComposeFile(const std::string& appName) override;
 
     void upDockerCompose(const std::string& appName) override;
