@@ -6,7 +6,8 @@
 #include "glog/logging.h"
 #include <cstdio>
 
-Executor::Executor(std::string command) {
+Executor::Executor(std::string _command) {
+    std::string command(std::move(_command));
     pp = popen(command.data(), "r"); // build pipe
     if (!pp) {
         DLOG(ERROR) << "open pipe failed.";
