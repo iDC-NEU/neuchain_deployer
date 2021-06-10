@@ -30,7 +30,12 @@ void AriaDeliverServerImpl::upDockerCompose(const std::string &appName) {
 void AriaDeliverServerImpl::downDockerCompose(const std::string &) {
     auto command = std::make_unique<Executor>("kill -9 $(pidof user)\n"
                                               "kill -9 $(pidof block_server_test_comm)\n"
-                                              "kill -9 $(pidof epoch_server)\n");
+                                              "kill -9 $(pidof epoch_server)\n"
+                                              "cd bin\n"
+                                              "rm *.bin\n"
+                                              "rm block_num.txt\n"
+                                              "rm -rf small_bank\n"
+                                              "rm -rf test_table\n");
     command->join();
     pendingExecution.push_back(std::move(command));
 }
