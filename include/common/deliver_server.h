@@ -25,7 +25,7 @@ public:
 
     virtual void strReplace(const std::map<std::string, std::string>& replacement);
 
-    virtual void saveDockerComposeFile(const std::string& appName) = 0;
+    virtual void saveDockerComposeFile(const std::string& appName, const std::string &fileName) = 0;
 
     virtual void upDockerCompose(const std::string& appName) = 0;
 

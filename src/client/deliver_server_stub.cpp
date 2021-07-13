@@ -16,7 +16,7 @@ void DeliverServerStub::strReplace(const std::map<std::string, std::string> &rep
     }
 }
 
-void DeliverServerStub::saveDockerComposeFile(const std::string &appName) {
+void DeliverServerStub::saveDockerComposeFile(const std::string &appName, const std::string &fileName) {
     *ctlMsg->mutable_folder() = appName;
     ctlMsg->set_status(docker_control_message_Status_CONFIG);
     sendAndResetMsg();

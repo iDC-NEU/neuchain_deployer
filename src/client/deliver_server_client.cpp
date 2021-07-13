@@ -51,7 +51,7 @@ void DeliverServerClient::updateConfigFile() {
         }
         deliver = createDeliverServer(server["ip"].as<std::string>());
         deliver->strReplace(uniqueReplacement);
-        deliver->saveDockerComposeFile(server["folder_name"].as<std::string>());
+        deliver->saveDockerComposeFile(server["folder_name"].as<std::string>(), "");
         LOG(INFO) << server["folder_name"].as<std::string>() << " in " << server["ip"].as<std::string>() <<" is updated.";
         deliverList.push_back(std::move(deliver));
     }

@@ -14,7 +14,11 @@ void DeliverServerControllerImpl::configDockerContainer(const std::string &comma
     if(!message.raw_docker_compose_data().empty()) {
         deliver->setDockerComposeFile(message.raw_docker_compose_data());
     } else {
-        deliver->setDockerComposeFile(folder, "docker-compose.yaml");
+        if(folder == "caliper_config") {
+            deliver->setDockerComposeFile(folder, "network.json");
+        } else {
+            deliver->setDockerComposeFile(folder, "docker-compose.yaml");
+        }
     }
     // 2. replace str
     std::map<std::string, std::string> replacement;
@@ -23,7 +27,11 @@ void DeliverServerControllerImpl::configDockerContainer(const std::string &comma
     }
     deliver->strReplace(replacement);
     // 3. save it
-    deliver->saveDockerComposeFile(folder);
+    if(folder == "caliper_config") {
+        deliver->saveDockerComposeFile(folder, "network-modify.json");
+    } else {
+        deliver->saveDockerComposeFile(folder, "docker-compose-modify.yaml");
+    }
 }
 
 void DeliverServerControllerImpl::startDockerContainer(const std::string& folder) {

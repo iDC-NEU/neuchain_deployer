@@ -14,7 +14,7 @@ class DeliverServerImpl: public IDockerComposeDeliverServer {
 public:
     ~DeliverServerImpl() override;
 
-    void saveDockerComposeFile(const std::string& appName) override;
+    void saveDockerComposeFile(const std::string& appName, const std::string &fileName) override;
 
     void upDockerCompose(const std::string& appName) override;
 

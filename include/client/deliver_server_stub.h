@@ -17,7 +17,7 @@ public:
 
     void strReplace(const std::map<std::string, std::string>& replacement) override;
 
-    void saveDockerComposeFile(const std::string& appName) override;
+    void saveDockerComposeFile(const std::string& appName, const std::string &fileName) override;
 
     void upDockerCompose(const std::string& appName) override;
 

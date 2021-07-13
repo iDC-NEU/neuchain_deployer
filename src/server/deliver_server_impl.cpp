@@ -6,10 +6,10 @@
 #include <algorithm>
 #include <fstream>
 
-void DeliverServerImpl::saveDockerComposeFile(const std::string &appName) {
+void DeliverServerImpl::saveDockerComposeFile(const std::string &appName, const std::string &fileName) {
     Executor executor("mkdir " + appName);
     executor.join();
-    std::ofstream file(appName + "/" + "docker-compose-modify.yaml", std::ios::out | std::ios::binary);
+    std::ofstream file(appName + "/" + fileName, std::ios::out | std::ios::binary);
     file.write(fileData.data(), fileData.size());
     file.close();
 }

@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <fstream>
 
-void AriaDeliverServerImpl::saveDockerComposeFile(const std::string &) {
+void AriaDeliverServerImpl::saveDockerComposeFile(const std::string &, const std::string &) {
     std::ofstream file("bin/config.yaml", std::ios::out | std::ios::binary);
     file.write(fileData.data(), fileData.size());
     file.close();
