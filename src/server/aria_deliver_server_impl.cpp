@@ -35,6 +35,7 @@ void AriaDeliverServerImpl::downDockerCompose(const std::string &) {
                                               "rm *.bin\n"
                                               "rm block_num.txt\n"
                                               "rm -rf small_bank\n"
+                                              "rm -rf raft_data\n"
                                               "rm -rf test_table\n");
     command->join();
     pendingExecution.push_back(std::move(command));

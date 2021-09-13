@@ -58,8 +58,9 @@ FILE(GLOB CLIENT_SRC_COMMON
 SET(LIBRARY_DEPENDENCIES
         ${PROTO_HEADER}
         ${PROTO_SRC}
+        ${protobuf}
+        ${PROTOBUF_LIBRARY}
         libyaml-cpp.a
-        libprotobuf.a
         libzmq.a
         libgflags.a
         libglog.so
