@@ -7,26 +7,32 @@
 
 #include <string>
 #include <memory>
+#include <yaml-cpp/yaml.h>
 #include "common/deliver_server.h"
 #include "common/deliver_server_controller.h"
 
-class DeliverServerClient: public DeliverServerController {
+class DeliverServerClient : public DeliverServerController {
 public:
-    DeliverServerClient() = default;
+    DeliverServerClient();
+
     ~DeliverServerClient() override;
 
     void run() override;
 
-    std::function<std::unique_ptr<IDockerComposeDeliverServer>(const std::string&)> createDeliverServer;
+    std::function<std::unique_ptr<IDockerComposeDeliverServer>(const std::string &)> createDeliverServer;
 
 protected:
     void serverUp();
+
     void updateConfigFile();
+
     void serverDown();
+
+    std::string getReplacementValueRecursively(const std::string &key) const;
 
 private:
     std::vector<std::unique_ptr<IDockerComposeDeliverServer>> deliverList;
-
+    const YAML::Node configNode;
 };
 
 

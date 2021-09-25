@@ -4,7 +4,7 @@
 
 int main() {
     DeliverServerControllerImpl controller;
-    controller.setDeliverInstance(std::make_unique<AriaDeliverServerImpl>());
+    controller.setDeliverInstance(new AriaDeliverServerImpl());
     controller.run();
     return 0;
 }

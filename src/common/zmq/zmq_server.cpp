@@ -8,12 +8,12 @@
 ZMQServer::ZMQServer(const std::string &ip, const std::string &port, zmq::socket_type type) {
     context = new zmq::context_t;
     socket = new zmq::socket_t(*context, type);
-    std::string address = "tcp://"+ ip +":" + port;
+    std::string address = "tcp://" + ip + ":" + port;
     DLOG(INFO) << "listen address: " << address;
     socket->bind(address);
 }
 
-std::optional<size_t> ZMQServer::getRequest(zmq::message_t& request) {
+std::optional<size_t> ZMQServer::getRequest(zmq::message_t &request) {
     return socket->recv(request);
 }
 

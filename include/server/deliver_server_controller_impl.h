@@ -10,19 +10,13 @@
 #include "common/deliver_server.h"
 #include "common/deliver_server_controller.h"
 
-class DeliverServerControllerImpl: public DeliverServerController {
+class DeliverServerControllerImpl : public DeliverServerController {
 public:
-    DeliverServerControllerImpl() = default;
     ~DeliverServerControllerImpl() override;
-
-    inline void setDeliverInstance(std::unique_ptr<IDockerComposeDeliverServer> ptr) { deliver = std::move(ptr); }
 
     void run() override;
 
-protected:
-    void configDockerContainer(const std::string& commandRaw, const std::string& folder);
-    void startDockerContainer(const std::string& folder);
-    void stopDockerContainer(const std::string& folder);
+    inline void setDeliverInstance(IDockerComposeDeliverServer *ptr) { deliver.reset(ptr); }
 };
 
 

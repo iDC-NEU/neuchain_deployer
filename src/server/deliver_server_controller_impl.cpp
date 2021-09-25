@@ -7,67 +7,34 @@
 #include "common/zmq/zmq_server.h"
 #include "glog/logging.h"
 
-void DeliverServerControllerImpl::configDockerContainer(const std::string &commandRaw, const std::string& folder) {
-    docker_config_message message;
-    CHECK(message.ParseFromString(commandRaw));
-    // 1. load template
-    if(!message.raw_docker_compose_data().empty()) {
-        deliver->setDockerComposeFile(message.raw_docker_compose_data());
-    } else {
-        if(folder == "caliper_config") {
-            deliver->setDockerComposeFile(folder, "network.json");
-        } else {
-            deliver->setDockerComposeFile(folder, "docker-compose.yaml");
-        }
-    }
-    // 2. replace str
-    std::map<std::string, std::string> replacement;
-    for (const auto& pair: message.replacement()) {
-        replacement[pair.first] = pair.second;
-    }
-    deliver->strReplace(replacement);
-    // 3. save it
-    if(folder == "caliper_config") {
-        deliver->saveDockerComposeFile(folder, "network-modify.json");
-    } else {
-        deliver->saveDockerComposeFile(folder, "docker-compose-modify.yaml");
-    }
-}
-
-void DeliverServerControllerImpl::startDockerContainer(const std::string& folder) {
-    deliver->upDockerCompose(folder);
-}
-
-void DeliverServerControllerImpl::stopDockerContainer(const std::string& folder) {
-    deliver->downDockerCompose(folder);
-}
-
 void DeliverServerControllerImpl::run() {
     ZMQServer server("0.0.0.0", "8888");
-    auto deserializeRequest = [&](const std::string& requestRaw) -> docker_control_message {
+    auto deserializeRequest = [&](const std::string &requestRaw) -> docker_control_message {
         docker_control_message message;
-        message.ParseFromString(requestRaw);
+        CHECK(message.ParseFromString(requestRaw));
         return std::move(message);
     };
-    while(true) {
+    while (true) {
         std::string requestRaw;
         server.getRequest(requestRaw);
         auto message = deserializeRequest(requestRaw);
-        if(message.status() == docker_control_message_Status_EXIT) {
+        if (message.status() == docker_control_message_Status_EXIT) {
             break;
         }
         // process request
         switch (message.status()) {
             case docker_control_message_Status_UP: {
-                startDockerContainer(message.folder());
+                deliver->upCommand(message.folder());
                 break;
             }
             case docker_control_message_Status_DOWN: {
-                stopDockerContainer(message.folder());
+                deliver->downCommand(message.folder());
                 break;
             }
             case docker_control_message_Status_CONFIG: {
-                configDockerContainer(message.additional_data(), message.folder());
+                const std::string &command = message.folder();
+                const std::string &messageRaw = message.additional_data();
+                deliver->updateCommand(command, messageRaw);
                 break;
             }
             default:

@@ -11,19 +11,25 @@
 
 class ZMQClient {
 public:
-    ZMQClient(const std::string& ip, const std::string& port, zmq::socket_type type = zmq::socket_type::req);
+    ZMQClient(const std::string &ip, const std::string &port, zmq::socket_type type = zmq::socket_type::req);
+
     virtual ~ZMQClient();
 
     std::optional<size_t> sendRequest();
-    std::optional<size_t> sendRequest(zmq::const_buffer& request);
-    std::optional<size_t> sendRequest(const std::string& request);
+
+    std::optional<size_t> sendRequest(zmq::const_buffer &request);
+
+    std::optional<size_t> sendRequest(const std::string &request);
+
     std::optional<size_t> getReply();
-    std::optional<size_t> getReply(zmq::message_t& reply);
-    std::optional<size_t> getReply(std::string& reply);
+
+    std::optional<size_t> getReply(zmq::message_t &reply);
+
+    std::optional<size_t> getReply(std::string &reply);
 
 private:
-    zmq::context_t* context;
-    zmq::socket_t* socket;
+    zmq::context_t *context;
+    zmq::socket_t *socket;
 };
 
 

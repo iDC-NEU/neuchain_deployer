@@ -6,7 +6,7 @@
 #define DELIVER_SERVICE_DELIVER_SERVER_H
 
 #include <string>
-#include <map>
+#include <google/protobuf/map.h>
 
 /*
  *  This class is used in each server
@@ -17,37 +17,20 @@ class IDockerComposeDeliverServer {
 public:
     virtual ~IDockerComposeDeliverServer() = default;
 
-    // directly pass data of a file
-    virtual void setDockerComposeFile(const std::string& data) { fileData = data; }
+    virtual void emitCommand(const std::string &type, std::initializer_list<std::string> command) = 0;
 
-    // load it from disk
-    virtual void setDockerComposeFile(const std::string& folderName, const std::string& fileName);
+    virtual void updateCommand(const std::string &command, const std::string &messageRaw) = 0;
 
-    virtual void strReplace(const std::map<std::string, std::string>& replacement);
+    virtual void upCommand(const std::string &command) = 0;
 
-    virtual void saveDockerComposeFile(const std::string& appName, const std::string &fileName) = 0;
-
-    virtual void upDockerCompose(const std::string& appName) = 0;
-
-    virtual void downDockerCompose(const std::string& appName) = 0;
+    virtual void downCommand(const std::string &command) = 0;
 
 protected:
-    std::string fileData;
-};
+    // load it from disk
+    static bool loadConfigFile(std::string &data, const std::string &fileNameWithPath);
 
-class IUserDeliverServer {
-public:
-    virtual ~IUserDeliverServer() = default;
-
-    virtual void setSetupJsonFile(const std::string& data) = 0;
-
-    virtual void connectZookeeper(const std::string& ip) = 0;
-
-    virtual void setChaincodeFile(const std::string& data) = 0;
-
-    virtual void upZookeeper() = 0;
-
-    virtual void downZookeeper() = 0;
+    static bool
+    replaceConfigFileWithDict(std::string &data, const google::protobuf::Map<std::string, std::string> &dict);
 };
 
 #endif //DELIVER_SERVICE_DELIVER_SERVER_H

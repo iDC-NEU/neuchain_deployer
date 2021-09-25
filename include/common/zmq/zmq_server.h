@@ -9,21 +9,27 @@
 #include <optional>
 #include <zmq.hpp>
 
-class ZMQServer{
+class ZMQServer {
 public:
-    ZMQServer(const std::string& ip, const std::string& port, zmq::socket_type type = zmq::socket_type::rep);
+    ZMQServer(const std::string &ip, const std::string &port, zmq::socket_type type = zmq::socket_type::rep);
+
     virtual ~ZMQServer();
 
     std::optional<size_t> getRequest();
-    std::optional<size_t> getRequest(zmq::message_t& request);
-    std::optional<size_t> getRequest(std::string& request);
+
+    std::optional<size_t> getRequest(zmq::message_t &request);
+
+    std::optional<size_t> getRequest(std::string &request);
+
     std::optional<size_t> sendReply();
-    std::optional<size_t> sendReply(zmq::const_buffer& reply);
-    std::optional<size_t> sendReply(const std::string& reply);
+
+    std::optional<size_t> sendReply(zmq::const_buffer &reply);
+
+    std::optional<size_t> sendReply(const std::string &reply);
 
 private:
-    zmq::context_t* context;
-    zmq::socket_t* socket;
+    zmq::context_t *context;
+    zmq::socket_t *socket;
 };
 
 

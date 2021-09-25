@@ -4,7 +4,7 @@
 
 int main() {
     DeliverServerControllerImpl controller;
-    controller.setDeliverInstance(std::make_unique<DeliverServerImpl>());
+    controller.setDeliverInstance(new DeliverServerImpl);
     controller.run();
     return 0;
 }

@@ -27,10 +27,10 @@ public:
     explicit ServerListener(std::string _port);
 
     template<typename ClassName, typename ClassInstance>
-    ServerListener(ClassName&& f, ClassInstance&& args,
-                   const std::vector<std::string>& ips, const std::string& _port) :ServerListener(_port) {
-        for(const auto& ip: ips) {
-            if(ip == localIP) {
+    ServerListener(ClassName &&f, ClassInstance &&args,
+                   const std::vector<std::string> &ips, const std::string &_port) :ServerListener(_port) {
+        for (const auto &ip: ips) {
+            if (ip == localIP) {
                 continue;
             }
             addServerListener(std::forward<ClassName>(f), std::forward<ClassInstance>(args), ip);
@@ -40,12 +40,12 @@ public:
     ~ServerListener();
 
     template<typename ClassName, typename ClassInstance>
-    bool addServerListener(ClassName&& f, ClassInstance&& args, const std::string& ip) {
+    bool addServerListener(ClassName &&f, ClassInstance &&args, const std::string &ip) {
         if (remoteIPs.count(ip))
             return false;
         remoteIPs.insert(ip);
 
-        auto* client = new ZMQClient(ip, port, zmq::socket_type::sub);
+        auto *client = new ZMQClient(ip, port, zmq::socket_type::sub);
         clients.push_back(client);
         remoteReceiverThreads.push_back(
                 new std::thread(std::forward<ClassName>(f), std::forward<ClassInstance>(args), ip, client)
@@ -57,8 +57,8 @@ private:
     const std::string port;
     const std::string localIP;
     std::set<std::string> remoteIPs;
-    std::vector<std::thread*> remoteReceiverThreads;
-    std::vector<ZMQClient*> clients;
+    std::vector<std::thread *> remoteReceiverThreads;
+    std::vector<ZMQClient *> clients;
 
 };
 

@@ -10,14 +10,15 @@
 class Executor {
 public:
     explicit Executor(std::string command);
+
     ~Executor();
 
-    void join(bool print=true);
+    void join(bool print = true);
 
     bool status() { return pp != nullptr; }
 
 private:
-    void* pp;
+    void *pp;
 };
 
 #endif //DELIVER_SERVICE_EXECUTOR_H

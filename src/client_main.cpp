@@ -4,7 +4,7 @@
 
 int main() {
     DeliverServerClient controller;
-    controller.createDeliverServer = [](const std::string& ip) -> std::unique_ptr<IDockerComposeDeliverServer> {
+    controller.createDeliverServer = [](const std::string &ip) -> std::unique_ptr<IDockerComposeDeliverServer> {
         return std::make_unique<DeliverServerStub>(ip);
     };
     controller.run();

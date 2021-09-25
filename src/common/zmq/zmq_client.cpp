@@ -10,16 +10,14 @@ ZMQClient::ZMQClient(const std::string &ip, const std::string &port, zmq::socket
     socket = new zmq::socket_t(*context, type);
     // init for spec socket type
     // 1. for sub and x_sub
-    if (type == zmq::socket_type::sub || type == zmq::socket_type::xsub){
-        socket->set(zmq::sockopt::subscribe,"");
-    }
-    else if (type == zmq::socket_type::req) {
-     
-    }
-    else {
+    if (type == zmq::socket_type::sub || type == zmq::socket_type::xsub) {
+        socket->set(zmq::sockopt::subscribe, "");
+    } else if (type == zmq::socket_type::req) {
+
+    } else {
         LOG(WARNING) << "unsupported recv type, may cause unpredictable error!";
     }
-    std::string address = "tcp://"+ ip +":" + port;
+    std::string address = "tcp://" + ip + ":" + port;
     DLOG(INFO) << "remote server address: " << address;
     socket->connect(address);
 }
@@ -29,7 +27,7 @@ ZMQClient::~ZMQClient() {
     delete context;
 }
 
-std::optional<size_t> ZMQClient::sendRequest(zmq::const_buffer& request) {
+std::optional<size_t> ZMQClient::sendRequest(zmq::const_buffer &request) {
     return socket->send(request);
 }
 

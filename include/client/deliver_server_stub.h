@@ -12,19 +12,20 @@
 
 class DeliverServerStub : public IDockerComposeDeliverServer {
 public:
-    explicit DeliverServerStub(const std::string& serverIP);
+    explicit DeliverServerStub(const std::string &serverIP);
+
     ~DeliverServerStub() override;
 
-    void strReplace(const std::map<std::string, std::string>& replacement) override;
+    void emitCommand(const std::string &type, std::initializer_list<std::string> command) override;
 
-    void saveDockerComposeFile(const std::string& appName, const std::string &fileName) override;
+    void updateCommand(const std::string &command, const std::string &messageRaw) override;
 
-    void upDockerCompose(const std::string& appName) override;
+    void upCommand(const std::string &command) override;
 
-    void downDockerCompose(const std::string& appName) override;
+    void downCommand(const std::string &command) override;
 
 protected:
-    inline void sendAndResetMsg();
+    void sendAndResetMsg();
 
 private:
     std::unique_ptr<ZMQClient> client;

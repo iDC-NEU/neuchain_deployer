@@ -16,13 +16,13 @@ Executor::Executor(std::string _command) {
 }
 
 Executor::~Executor() {
-    pclose(static_cast<FILE*>(pp));
+    pclose(static_cast<FILE *>(pp));
 }
 
 void Executor::join(bool print) {
     char buffer[1024];
-    while (fgets(buffer, sizeof(buffer), static_cast<FILE*>(pp)) != nullptr) {
-        if(print)
+    while (fgets(buffer, sizeof(buffer), static_cast<FILE *>(pp)) != nullptr) {
+        if (print)
             LOG(INFO) << buffer; // wait until command is finished
     }
 }

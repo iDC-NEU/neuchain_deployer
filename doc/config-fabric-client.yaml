@@ -11,23 +11,23 @@ hosts:
   ${ORG_1_PEER_2_IP}: 172.22.31.63
   ${ORG_1_PEER_3_IP}: 172.22.31.72
   ${USER_ZOO_0_IP}: 172.22.31.73
-  
+
 servers:
   - ip: 39.98.127.198
     folder_name: zoo0
     hosts:
       ${FABRIC_VERSION}: 1.4.0
-      
+
   - ip: 39.98.127.198
     folder_name: kafka0
     hosts:
       ${FABRIC_VERSION}: 1.4.0
-      
+
   - ip: 8.142.27.11
     folder_name: org1_ca
     hosts:
       ${FABRIC_VERSION}: 1.4.0
-      
+
   - ip: 8.144.179.85
     folder_name: orderer0
     hosts:
@@ -37,17 +37,17 @@ servers:
     folder_name: org1_peer0
     hosts:
       ${FABRIC_VERSION}: 1.5.0
-      
+
   - ip: 8.142.11.83
     folder_name: org1_peer1
     hosts:
       ${FABRIC_VERSION}: 1.5.0
-      
+
   - ip: 8.142.25.255
     folder_name: org1_peer2
     hosts:
       ${FABRIC_VERSION}: 1.5.0
-      
+
   - ip: 8.142.41.183
     folder_name: org1_peer3
     hosts:

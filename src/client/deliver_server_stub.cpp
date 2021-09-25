@@ -4,48 +4,54 @@
 
 #include "client/deliver_server_stub.h"
 
-DeliverServerStub::~DeliverServerStub() {
+DeliverServerStub::DeliverServerStub(const std::string &serverIP)
+        : client(std::make_unique<ZMQClient>(serverIP, "8888")),
+          ctlMsg(std::make_unique<docker_control_message>()),
+          cfgMsg(std::make_unique<docker_config_message>()) {
 
 }
 
-void DeliverServerStub::strReplace(const std::map<std::string, std::string> &replacement) {
-    auto& googleReplacement = *cfgMsg->mutable_replacement();
-    googleReplacement.clear();
-    for(const auto& pair: replacement) {
-        googleReplacement[pair.first] = pair.second;
-    }
-}
+DeliverServerStub::~DeliverServerStub() = default;
 
-void DeliverServerStub::saveDockerComposeFile(const std::string &appName, const std::string &fileName) {
-    *ctlMsg->mutable_folder() = appName;
+void DeliverServerStub::updateCommand(const std::string &command, const std::string &messageRaw) {
+    docker_config_message message;
+    message.ParseFromString(messageRaw);
+    cfgMsg->mutable_replacement()->swap(*message.mutable_replacement());
+    ctlMsg->set_folder(command);
     ctlMsg->set_status(docker_control_message_Status_CONFIG);
     sendAndResetMsg();
 }
 
-void DeliverServerStub::upDockerCompose(const std::string &appName) {
-    *ctlMsg->mutable_folder() = appName;
+void DeliverServerStub::upCommand(const std::string &command) {
+    ctlMsg->set_folder(command);
     ctlMsg->set_status(docker_control_message_Status_UP);
     sendAndResetMsg();
 }
 
-void DeliverServerStub::downDockerCompose(const std::string &appName) {
-    *ctlMsg->mutable_folder() = appName;
+void DeliverServerStub::downCommand(const std::string &command) {
+    ctlMsg->set_folder(command);
     ctlMsg->set_status(docker_control_message_Status_DOWN);
     sendAndResetMsg();
 }
 
-DeliverServerStub::DeliverServerStub(const std::string& serverIP)
-        :client(std::make_unique<ZMQClient>(serverIP, "8888")),
-         ctlMsg(std::make_unique<docker_control_message>()),
-         cfgMsg(std::make_unique<docker_config_message>()) {
-
+void DeliverServerStub::sendAndResetMsg() {
+    ctlMsg->set_additional_data(cfgMsg->SerializeAsString());
+    client->sendRequest(ctlMsg->SerializeAsString());
+    client->getReply();
+    ctlMsg->Clear();
+    cfgMsg->Clear();
 }
 
-void DeliverServerStub::sendAndResetMsg() {
-    *cfgMsg->mutable_raw_docker_compose_data() = fileData;
-    *ctlMsg->mutable_additional_data() = cfgMsg->SerializeAsString();
-    client->sendRequest(ctlMsg->SerializeAsString());
-    ctlMsg = std::make_unique<docker_control_message>();
-    cfgMsg = std::make_unique<docker_config_message>();
-    client->getReply();
+void DeliverServerStub::emitCommand(const std::string &type, std::initializer_list<std::string> command) {
+    if (command.size()) {
+        if (type == "up") {
+            upCommand(*command.begin());
+        }
+        if (type == "down") {
+            downCommand(*command.begin());
+        }
+        if (type == "update" && command.size() >= 2) {
+            updateCommand(*command.begin(), *(command.begin() + 1));
+        }
+    }
 }
