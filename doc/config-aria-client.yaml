@@ -1,37 +1,53 @@
-hosts:
+# this is the config file for deliver_client
+
+replacement_dict:
   ${block_server_0_ip}: 127.0.0.1
-  ${block_server_1_ip}: 127.0.0.2
-  ${block_server_2_ip}: 127.0.0.3
-  ${block_server_3_ip}: 127.0.0.4
-  ${block_server_4_ip}: 127.0.0.5
-  ${block_server_5_ip}: 127.0.0.6
-  ${block_server_6_ip}: 127.0.0.7
-  ${block_server_7_ip}: 127.0.0.8
+  ${block_server_1_ip}: 127.0.0.1
+  ${block_server_2_ip}: 127.0.0.1
+  ${block_server_3_ip}: 127.0.0.1
 
   ${epoch_server_0_ip}: 127.0.0.1
+  ${epoch_server_1_ip}: 127.0.0.1
+  ${epoch_server_2_ip}: 127.0.0.1
+  ${user_ip}: 127.0.0.1
 
   ${cc_type}: small_bank
-
-  ${aggregation_enable_flag}: false
-  ${aggregation_block_server_0_ip}: 127.0.0.1
-  ${aggregation_block_server_1_ip}: 127.0.0.2
-
   cc_config_a: cc_config
 
+  ${aggregation_enable_flag}: false
+  ${aggregation_block_server_0_ip}: ${block_server_0_ip}
+  ${aggregation_block_server_1_ip}: ${block_server_1_ip}
+
 servers:
-  - ip: 127.0.0.1
-    folder_name: ./block_server_test_comm
-    hosts:
-      ${local_server_ip}: 127.0.0.1
-  - ip: 127.0.0.1
-    folder_name: ./user
-    hosts:
-      ${local_server_ip}: 127.0.0.1
-  - ip: 127.0.0.1
-    folder_name: ./epoch_server -t 500
-    hosts:
-      ${local_server_ip}: 127.0.0.1
-  - ip: 127.0.0.1
-    folder_name: ./user -b 20 4000 1000000
-    hosts:
-      ${local_server_ip}: 127.0.0.1
+  - ip: ${block_server_0_ip}
+    up_command: ./block_server_test_comm
+    extra_replacement_dict:
+      ${local_server_ip}: ${block_server_0_ip}
+  - ip: ${block_server_1_ip}
+    up_command: ./block_server_test_comm
+    extra_replacement_dict:
+      ${local_server_ip}: ${block_server_1_ip}
+  - ip: ${block_server_2_ip}
+    up_command: ./block_server_test_comm
+    extra_replacement_dict:
+      ${local_server_ip}: ${block_server_2_ip}
+  - ip: ${block_server_3_ip}
+    up_command: ./block_server_test_comm
+    extra_replacement_dict:
+      ${local_server_ip}: ${block_server_3_ip}
+  - ip: ${epoch_server_0_ip}
+    up_command: ./epoch_server --block_size 50 --raft_port 8100 --receiver_port 9002 --broadcaster_port 9003 --batch_size 100 --duration 50
+    extra_replacement_dict:
+      ${local_server_ip}: ${epoch_server_0_ip}
+  - ip: ${epoch_server_1_ip}
+    up_command: ./epoch_server --block_size 50 --raft_port 8100 --receiver_port 9002 --broadcaster_port 9003 --batch_size 100 --duration 50
+    extra_replacement_dict:
+      ${local_server_ip}: ${epoch_server_1_ip}
+  - ip: ${epoch_server_2_ip}
+    up_command: ./epoch_server --block_size 50 --raft_port 8100 --receiver_port 9002 --broadcaster_port 9003 --batch_size 100 --duration 50
+    extra_replacement_dict:
+      ${local_server_ip}: ${epoch_server_2_ip}
+  - ip: ${user_ip}
+    up_command: ./user -b 32 10000 1000000
+    extra_replacement_dict:
+      ${local_server_ip}: ${block_server_0_ip}

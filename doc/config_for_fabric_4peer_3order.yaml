@@ -1,0 +1,97 @@
+# this is the config file for deliver_client
+
+replacement_dict:
+  ${FABRIC_VERSION}: 1.4.0
+  ${FABRIC_LOG_LEVEL}: ERROR
+  ${ORDERER_0_IP}: 127.0.0.1
+  ${ORDERER_1_IP}: 127.0.0.1
+  ${ORDERER_2_IP}: 127.0.0.1
+  ${ORG_1_PEER_0_IP}: 127.0.0.1
+  ${ORG_1_PEER_1_IP}: 127.0.0.1
+  ${ORG_1_PEER_2_IP}: 127.0.0.1
+  ${ORG_1_PEER_3_IP}: 127.0.0.1
+  ${USER_ZOO_0_IP}: 127.0.0.1
+  ${CA_ORG_1_IP}: ${ORDERER_0_IP}
+  ${ZOO_0_IP}: ${ORDERER_0_IP}
+  ${ZOO_1_IP}: ${ORDERER_1_IP}
+  ${ZOO_2_IP}: ${ORDERER_2_IP}
+  ${KAFKA_0_IP}: ${ORDERER_0_IP}
+  ${KAFKA_1_IP}: ${ORDERER_1_IP}
+  ${KAFKA_2_IP}: ${ORDERER_2_IP}
+  ${FABRIC_CA_VERSION}: 1.5.0
+
+servers:
+  - ip: ${ZOO_0_IP}
+    up_command: zoo0
+    down_command: zoo0
+    update_command: zoo0
+
+  - ip: ${ZOO_1_IP}
+    up_command: zoo1
+    down_command: zoo1
+    update_command: zoo1
+
+  - ip: ${ZOO_2_IP}
+    up_command: zoo2
+    down_command: zoo2
+    update_command: zoo2
+
+  - ip: ${KAFKA_0_IP}
+    up_command: kafka0
+    down_command: kafka0
+    update_command: kafka0
+
+  - ip: ${KAFKA_1_IP}
+    up_command: kafka1
+    down_command: kafka1
+    update_command: kafka1
+
+  - ip: ${KAFKA_2_IP}
+    up_command: kafka2
+    down_command: kafka2
+    update_command: kafka2
+
+  - ip: ${CA_ORG_1_IP}
+    up_command: org1_ca
+    down_command: org1_ca
+    update_command: org1_ca
+
+  - ip: ${ORDERER_0_IP}
+    up_command: orderer0
+    down_command: orderer0
+    update_command: orderer0
+
+  - ip: ${ORDERER_1_IP}
+    up_command: orderer1
+    down_command: orderer1
+    update_command: orderer1
+
+  - ip: ${ORDERER_2_IP}
+    up_command: orderer2
+    down_command: orderer2
+    update_command: orderer2
+
+  - ip: ${ORG_1_PEER_0_IP}
+    up_command: org1_peer0
+    down_command: org1_peer0
+    update_command: org1_peer0
+
+  - ip: ${ORG_1_PEER_1_IP}
+    up_command: org1_peer1
+    down_command: org1_peer1
+    update_command: org1_peer1
+
+  - ip: ${ORG_1_PEER_2_IP}
+    up_command: org1_peer2
+    down_command: org1_peer2
+    update_command: org1_peer2
+
+  - ip: ${ORG_1_PEER_3_IP}
+    up_command: org1_peer3
+    down_command: org1_peer3
+    update_command: org1_peer3
+
+  - ip: ${USER_ZOO_0_IP}
+    up_command: caliper_config
+    down_command: caliper_config
+    update_command: caliper_config

@@ -1,4 +1,4 @@
-# this is a config file for 8 servers
+# this is a config file for 4 servers and 3 epoch servers
 init_crypto: false
 reset_epoch: true
 
@@ -11,13 +11,11 @@ server_ips:
   - ${block_server_1_ip}
   - ${block_server_2_ip}
   - ${block_server_3_ip}
-  - ${block_server_4_ip}
-  - ${block_server_5_ip}
-  - ${block_server_6_ip}
-  - ${block_server_7_ip}
 
 epoch_ips:
   - ${epoch_server_0_ip}
+  - ${epoch_server_1_ip}
+  - ${epoch_server_2_ip}
 
 #cc_type: ycsb
 cc_type: ${cc_type}
@@ -68,26 +66,6 @@ server_data:
     private_crt: crypto/server.3.private.key
     user_public_crt: crypto/server.3.public.user.key
     user_private_crt: crypto/server.3.private.user.key
-  ${block_server_4_ip}:
-    public_crt: crypto/server.4.public.key
-    private_crt: crypto/server.4.private.key
-    user_public_crt: crypto/server.4.public.user.key
-    user_private_crt: crypto/server.4.private.user.key
-  ${block_server_5_ip}:
-    public_crt: crypto/server.5.public.key
-    private_crt: crypto/server.5.private.key
-    user_public_crt: crypto/server.5.public.user.key
-    user_private_crt: crypto/server.5.private.user.key
-  ${block_server_6_ip}:
-    public_crt: crypto/server.6.public.key
-    private_crt: crypto/server.6.private.key
-    user_public_crt: crypto/server.6.public.user.key
-    user_private_crt: crypto/server.6.private.user.key
-  ${block_server_7_ip}:
-    public_crt: crypto/server.7.public.key
-    private_crt: crypto/server.7.private.key
-    user_public_crt: crypto/server.7.public.user.key
-    user_private_crt: crypto/server.7.private.user.key
 
 #epoch server cert
 epoch_data:
