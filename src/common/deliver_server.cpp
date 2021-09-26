@@ -9,6 +9,9 @@
 bool IDockerComposeDeliverServer::loadConfigFile(std::string &data, const std::string &fileNameWithPath) {
     data.clear();
     std::ifstream file(fileNameWithPath, std::ios::in | std::ios::binary);
+    if (!file.is_open() || !file.good()) {
+        return false;
+    }
     do {
         std::string buffer;
         buffer.resize(512);

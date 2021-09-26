@@ -24,22 +24,25 @@ void DeliverServerControllerImpl::run() {
         // process request
         switch (message.status()) {
             case docker_control_message_Status_UP: {
-                deliver->upCommand(message.folder());
+                deliver->upCommand(message.command());
                 break;
             }
             case docker_control_message_Status_DOWN: {
-                deliver->downCommand(message.folder());
+                deliver->downCommand(message.command());
                 break;
             }
             case docker_control_message_Status_CONFIG: {
-                const std::string &command = message.folder();
+                const std::string &command = message.command();
                 const std::string &messageRaw = message.additional_data();
                 deliver->updateCommand(command, messageRaw);
                 break;
             }
             default:
-                LOG(ERROR) << "wrong control message.";
-                CHECK(false);
+                LOG(ERROR) << "unknown control message, pass to deliver server directly";
+                const std::string &command = message.command(); // command
+                const std::string &messageRaw = message.additional_data();  // param
+                deliver->emitCommand("custom", {command, messageRaw});
+                break;
         }
         server.sendReply();
     }

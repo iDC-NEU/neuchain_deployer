@@ -4,6 +4,7 @@
 
 #include "server/aria_deliver_server_impl.h"
 #include <fstream>
+#include <glog/logging.h>
 #include <comm.pb.h>
 
 void AriaDeliverServerImpl::updateCommand(const std::string &command, const std::string &messageRaw) {
@@ -15,21 +16,31 @@ void AriaDeliverServerImpl::updateCommand(const std::string &command, const std:
         message.ParseFromString(messageRaw);
         const auto &dict = message.replacement();
         std::string fileData;
-        loadConfigFile(fileData, oldFilePath);
+        if (!loadConfigFile(fileData, oldFilePath)) {
+            LOG(WARNING) << "failed loading file: " << oldFilePath;
+            return;
+        }
         // 2. replace str
         IDockerComposeDeliverServer::replaceConfigFileWithDict(fileData, dict);
         // 3. save it
         std::ofstream file(newFilePath, std::ios::out | std::ios::binary);
         file.write(fileData.data(), fileData.size());
         file.close();
+        LOG(WARNING) << "file updated: " << newFilePath;
     };
     updateFile("./bin/config-template.yaml", "./bin/config.yaml", messageRaw);
+    if (command.empty()) {
+        return;
+    }
     // exec command after modify config
     pendingExecution.push_back(std::make_unique<Executor>(command));
     pendingExecution.back()->join();
 }
 
 void AriaDeliverServerImpl::upCommand(const std::string &command) {
+    if (command.empty()) {
+        return;
+    }
     // command represent command;
     pendingExecution.push_back(std::make_unique<Executor>(command));
 }
@@ -52,5 +63,12 @@ void AriaDeliverServerImpl::downCommand(const std::string &command) {
 }
 
 void AriaDeliverServerImpl::emitCommand(const std::string &type, std::initializer_list<std::string> command) {
-    // TODO: support custom command
+    if (type == "custom") {
+        if (!command.size() || command.begin()->empty()) {
+            LOG(WARNING) << "custom command is empty";
+            return;
+        }
+        LOG(INFO) << "exec custom command: " << *command.begin();
+        pendingExecution.emplace_back(std::make_unique<Executor>(*command.begin()));
+    }
 }

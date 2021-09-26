@@ -11,9 +11,10 @@ message docker_control_message {
     DOWN = 1;
     CONFIG = 2;
     EXIT = 3;
+    UNKNOWN = 4;
   }
 
-  bytes folder = 1;
+  bytes command = 1;
   Status status = 2;
   bytes additional_data = 3;
 }

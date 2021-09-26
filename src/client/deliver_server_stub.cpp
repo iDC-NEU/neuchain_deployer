@@ -17,19 +17,19 @@ void DeliverServerStub::updateCommand(const std::string &command, const std::str
     docker_config_message message;
     message.ParseFromString(messageRaw);
     cfgMsg->mutable_replacement()->swap(*message.mutable_replacement());
-    ctlMsg->set_folder(command);
+    ctlMsg->set_command(command);
     ctlMsg->set_status(docker_control_message_Status_CONFIG);
     sendAndResetMsg();
 }
 
 void DeliverServerStub::upCommand(const std::string &command) {
-    ctlMsg->set_folder(command);
+    ctlMsg->set_command(command);
     ctlMsg->set_status(docker_control_message_Status_UP);
     sendAndResetMsg();
 }
 
 void DeliverServerStub::downCommand(const std::string &command) {
-    ctlMsg->set_folder(command);
+    ctlMsg->set_command(command);
     ctlMsg->set_status(docker_control_message_Status_DOWN);
     sendAndResetMsg();
 }
@@ -52,6 +52,11 @@ void DeliverServerStub::emitCommand(const std::string &type, std::initializer_li
         }
         if (type == "update" && command.size() >= 2) {
             updateCommand(*command.begin(), *(command.begin() + 1));
+        }
+        if (type == "custom") {
+            ctlMsg->set_command(*command.begin());  // no params
+            ctlMsg->set_status(docker_control_message_Status_UNKNOWN);
+            sendAndResetMsg();
         }
     }
 }

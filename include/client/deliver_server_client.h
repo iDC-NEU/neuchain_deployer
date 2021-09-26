@@ -28,6 +28,19 @@ protected:
 
     void serverDown();
 
+    // broadcast to all servers, using command in yaml
+    void customCommand();
+
+    // send to specific server
+    void customCommand(const std::string& ip, const std::string& command);
+
+    // broadcast to all servers
+    void customCommand(const std::string& command);
+
+    std::string getNodeStringRecursively(const YAML::Node& node) const {
+        return node.IsDefined() ? getReplacementValueRecursively(node.as<std::string>()) : std::string();
+    }
+
     std::string getReplacementValueRecursively(const std::string &key) const;
 
 private:

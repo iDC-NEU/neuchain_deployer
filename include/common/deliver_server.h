@@ -17,8 +17,13 @@ class IDockerComposeDeliverServer {
 public:
     virtual ~IDockerComposeDeliverServer() = default;
 
+    // util_interface(type, command, param); <- here
+    //  -> type(command, param); <- will call
+    //  -> command(param);
     virtual void emitCommand(const std::string &type, std::initializer_list<std::string> command) = 0;
 
+    // type(command, param); <- here
+    //  -> command(param); <- will call
     virtual void updateCommand(const std::string &command, const std::string &messageRaw) = 0;
 
     virtual void upCommand(const std::string &command) = 0;
