@@ -45,7 +45,7 @@ protected:
 
 private:
     std::vector<std::unique_ptr<IDockerComposeDeliverServer>> deliverList;
-    const YAML::Node configNode;
+    YAML::Node configNode;
 };
 
 

@@ -78,6 +78,8 @@ void DeliverServerClient::serverUp() {
 }
 
 void DeliverServerClient::updateConfigFile() {
+    // reload config file
+    configNode = YAML::LoadFile("config.yaml");
     docker_config_message message;
     auto &replacement = *message.mutable_replacement();
     for (const auto &pair: configNode[CONFIG_REPLACEMENT_DICT]) {
