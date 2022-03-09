@@ -33,7 +33,13 @@ ADD_LIBRARY(protobuf ${PROTO_HEADER} ${PROTO_SRC})
 
 #3. yaml
 FIND_PACKAGE(yaml-cpp REQUIRED)
+FIND_PATH(YAML_INCLUDE_PATH NAMES yaml-cpp/yaml.h)
+FIND_LIBRARY(YAML_LIB NAMES yaml-cpp)
+if ((NOT YAML_INCLUDE_PATH) OR (NOT YAML_LIB))
+    MESSAGE(FATAL_ERROR "Fail to find yaml-cpp")
+endif ()
 INCLUDE_DIRECTORIES(${YAML_INCLUDE_DIRS})
+
 
 FILE(GLOB SERVER_SRC_COMMON
         "src/server/executor.cpp"
@@ -50,6 +56,7 @@ FILE(GLOB ARIA_SERVER_SRC_COMMON
         "src/common/deliver_server.cpp")
 
 FILE(GLOB CLIENT_SRC_COMMON
+        "src/server/executor.cpp"
         "src/client/deliver_server_stub.cpp"
         "src/client/deliver_server_client.cpp"
         "src/common/zmq/*.cpp"
@@ -60,7 +67,7 @@ SET(LIBRARY_DEPENDENCIES
         ${PROTO_SRC}
         ${protobuf}
         ${PROTOBUF_LIBRARY}
-        libyaml-cpp.a
+        ${YAML_LIB}
         libzmq.a
         libgflags.a
         libglog.so

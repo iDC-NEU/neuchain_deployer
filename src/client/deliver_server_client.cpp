@@ -33,8 +33,9 @@ std::string DeliverServerClient::getReplacementValueRecursively(const std::strin
 void DeliverServerClient::run() {
     std::string command;
     do {
-        std::cout << "'o': up the cluster, 'c': update config file, "
-                     "'d': down the cluster, 'e' to emit custom command:" << std::endl;
+        std::cout << "'o': up the cluster,\n 'c': update config file,\n"
+                     "'i' (re)install neu-chain to all other servers(do not run), path: ~/remote \n"
+                     "'d': down the cluster,\n 'e' to emit custom command:" << std::endl;
         std::getline(std::cin, command);
         if (command.size() == 1) {  // char
             switch (command[0]) {
@@ -52,6 +53,10 @@ void DeliverServerClient::run() {
                 }
                 case 'e': {
                     customCommand();
+                    break;
+                }
+                case 'i': {
+                    installCommand();
                     break;
                 }
                 default: {
@@ -132,4 +137,32 @@ void DeliverServerClient::customCommand(const std::string &command) {
         const auto &ip = getNodeStringRecursively(server[CONFIG_SERVERS_IP]);
         customCommand(ip, command);
     }
+}
+
+std::vector<std::unique_ptr<Executor>> pendingExecution;
+
+void DeliverServerClient::installCommand() {
+    LOG(INFO) << "install neu-chain to all servers(also this server)";
+    std::make_unique<Executor>("rm -rf ~/.ssh/known_hosts; \n");
+    for (const auto &server: configNode[CONFIG_SERVERS]) {
+        const auto &ip = getNodeStringRecursively(server[CONFIG_SERVERS_IP]);
+        std::ostringstream ss;
+        ss << "ssh-keyscan -H " << ip << " >> ~/.ssh/known_hosts; \n"; // add remote to host
+        ss << "sshpass -p 'neu1234.' ssh root@" << ip << " \"rm -rf ~/remote; mkdir ~/remote;\"; \n";
+        std::make_unique<Executor>(ss.str());
+    }
+    for (const auto &server: configNode[CONFIG_SERVERS]) {
+        const auto &ip = getNodeStringRecursively(server[CONFIG_SERVERS_IP]);
+        LOG(INFO) << "Copying files to server: " << ip;
+        std::ostringstream ss;
+        ss << "sshpass -p 'neu1234.' scp -r ~/release_0.27 root@" << ip << ":~/remote; \n"; // cp new files
+        std::make_unique<Executor>(ss.str());
+    }
+//    for (const auto &server: configNode[CONFIG_SERVERS]) {
+//        const auto &ip = getNodeStringRecursively(server[CONFIG_SERVERS_IP]);
+//        LOG(INFO) << "Starting server: " << ip;
+//        std::ostringstream ss;
+//        ss << "sshpass -p 'neu1234.' ssh root@" << ip << " \"cd ~/remote/release_0.27; ./install.sh;\"" << '\n';
+//        pendingExecution.emplace_back(std::make_unique<Executor>(ss.str()));
+//    }
 }

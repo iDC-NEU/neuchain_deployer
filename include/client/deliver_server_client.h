@@ -8,6 +8,7 @@
 #include <string>
 #include <memory>
 #include <yaml-cpp/yaml.h>
+#include <server/executor.h>
 #include "common/deliver_server.h"
 #include "common/deliver_server_controller.h"
 
@@ -30,6 +31,9 @@ protected:
 
     // broadcast to all servers, using command in yaml
     void customCommand();
+
+    // broadcast to all servers, using command in yaml
+    void installCommand();
 
     // send to specific server
     void customCommand(const std::string& ip, const std::string& command);
